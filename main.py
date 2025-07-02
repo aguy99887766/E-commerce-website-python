@@ -8,7 +8,7 @@ app.secret_key = "123"
 
 
 @app.route("/signup", methods=["POST", "GET"])
-def signup() -> None:
+def signup() -> render_template:
 	error = None
 	if request.method == "POST":
 		database = database_manager.load_database()
@@ -32,7 +32,7 @@ def signup() -> None:
 
 
 @app.route("/login", methods=["POST", "GET"])
-def login() -> None:
+def login() -> render_template:
 	if request.method == "POST":
 		users = database_manager.load_database()
 		username = request.form.get("username")
@@ -45,7 +45,7 @@ def login() -> None:
 			
 	return render_template("login.html")
 @app.route("/", methods=["POST", "GET"])
-def home_page() -> None:
+def home_page() -> render_template:
 	if request.method == "POST":	
 		if 'login' in request.form:
 			return redirect(url_for('login'))
@@ -54,12 +54,12 @@ def home_page() -> None:
 	return render_template("home_page.html")
 
 @app.route("/logout", methods=["POST", "GET"])
-def logout() -> None:
+def logout() -> render_template:
 	session.pop("username", None)
 	return redirect(url_for("home_page"))
 
 @app.route("/profile/in_bag/")
-def currently_saved() -> None:
+def currently_saved() -> render_template:
 	database = database_manager.load_database()
 	in_stock = [data["SHOPPING"] for data in database if data["USERNAME"] == session["username"]][0]
 	
@@ -67,7 +67,7 @@ def currently_saved() -> None:
 	return render_template("checkout.html", in_stock=in_stock)
 		
 @app.route("/profile", methods=["POST", "GET"])
-def logged_in() -> None:
+def logged_in() -> render_template:
 	if "username" in session:
 		username = session["username"]
 		in_stock = shop.list_items() 
