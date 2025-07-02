@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>User Profile</title>
+	</head>
+
+	<body>
+		<h1>Welcome, {{ username }}!</h1>
+		<a href = "{{ url_for('currently_saved') }}"/>Items in bag</a>
+		{% for stock, price in in_stock.items() %}
+		<p> {{ stock }}: {{ price }} </p>	
+		<form method="POST">
+			<input type="hidden" name="item" value="{{ stock }}">
+			<input type="submit" name="button" value="Add to cart"/> 
+		</form>
+		{% endfor %}
+		<form action="{{ url_for('logout') }}" method="POST">
+			<input type="submit" name="button" value="Logout"/>
+		</form>
+	</body>
+</html>
